@@ -36,7 +36,7 @@ end
 
 # Make sure the gems we need are in the Gemfile
 gemfile = File.read("#{appname}/Gemfile")
-gemfile.sub!(/\n\n\n/, "\n\nruby '2.3.0'\n\n")
+gemfile.sub!(/\n\n\n/, "\n\nruby '2.3.1'\n\n")
 gemfile.sub!(/# Use Unicorn as the app server\n# gem 'unicorn'/, 
             "# Use Puma as the app server\ngem 'puma', '~> 2.16'")
 gemfile.sub!(/# gem 'therubyracer'/, "gem 'therubyracer'")
