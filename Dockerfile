@@ -1,4 +1,4 @@
-FROM rails:4.2
+FROM rails:5.0
 
 RUN mkdir /usr/src/app /work
 ADD docker-rails-new.rb /usr/src/app/
