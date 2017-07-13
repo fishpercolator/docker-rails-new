@@ -26,6 +26,7 @@ system 'rails', 'new', '--database=postgresql', '--skip-bundle', appname, *args
 {
   'docker-compose.yml' => '/',
   'Dockerfile'         => '/',
+  'package.json'       => '/',
   'puma.rb'            => '/config',
   'database.yml'       => '/config'
 }.each do |file, path|
@@ -36,8 +37,7 @@ end
 
 # Make sure the gems we need are in the Gemfile
 gemfile = File.read("#{appname}/Gemfile")
-gemfile.sub!(/\n\n\n/, "\n\nruby '2.4.0'\n\n")
-gemfile.sub!(/# gem 'therubyracer'/, "gem 'therubyracer'")
+gemfile.sub!(/\n\n\n/, "\n\nruby '2.4.1'\n\n")
 
 gemfile += "\ngroup :production do\n  gem 'rails_12factor'\nend\n"
 

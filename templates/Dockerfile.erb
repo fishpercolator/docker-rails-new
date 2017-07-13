@@ -2,6 +2,17 @@ FROM ruby:2.4
 MAINTAINER Rich Daley <rich@fishpercolator.co.uk>
 ENV REFRESHED_AT <%= Date.today.to_s %>
 
+# These lines are needed for JavaScript testing with poltergeist, and to install nodejs and yarn
+RUN apt-get update -y && apt-get install -y apt-transport-https && apt-get clean
+RUN echo "deb https://deb.nodesource.com/node_6.x jessie main" > /etc/apt/sources.list.d/nodesource.list
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+RUN apt-get update -y && apt-get install less build-essential chrpath libssl-dev libxft-dev libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev nodejs yarn -y && apt-get clean
+ADD https://fishpercolator.co.uk/files/phantomjs-2.1.1-linux-x86_64.tar.bz2 /usr/local/share/
+RUN tar -C /usr/local/share -xjf /usr/local/share/phantomjs-2.1.1-linux-x86_64.tar.bz2
+RUN ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+
 RUN adduser --uid <%= Process.uid %> --disabled-password --gecos "" rails
 
 RUN gem install bundler
@@ -14,6 +25,9 @@ ADD Gemfile* $APP_HOME/
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile BUNDLE_JOBS=2 BUNDLE_PATH=/bundle
 
 RUN bundle install
+
+ADD package.json $APP_HOME/
+RUN yarn
 
 ENV RAILS_ENV       production
 ENV DOMAIN_NAME     localhost
