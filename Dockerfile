@@ -1,4 +1,5 @@
-FROM rails:5.0
+FROM ruby:2.4
+RUN gem install rails
 
 RUN mkdir /usr/src/app /work
 ADD docker-rails-new.rb /usr/src/app/
